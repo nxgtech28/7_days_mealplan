@@ -1,227 +1,411 @@
 jammu_kashmir_food = {
-       "breakfast": {
+    "breakfast": {
       "base_items": {
-        "core_items": [
-          "Lavasa Bread",
-          "Girda",
-          "Chana Dal Cheela",
-          "Besan Cheela",
-          "Aloo Paratha",
-          "Paneer Paratha",
-          "Gobhi Paratha",
-          "Mooli Paratha",
-          "Bathua Paratha",
-          "Makki di Roti",
-          "Stuffed Kulcha",
-          "Sweet Suji Cheela",
-          "Roti",
-          "Chapati",
-          "Bread"
-        ],
-        "complete_dishes": [
-          "Sabudana Khichdi",
-          "Vegetable Upma",
-          "Poha",
-          "Moong Dal Khichdi"
-        ]
+        "veg": {
+          "core_items": [
+            { "name": "Lavasa Bread", "calories": 80, "unit": "piece" },
+            { "name": "Girda", "calories": 120, "unit": "piece" },
+            { "name": "Chana Dal Cheela", "calories": 190, "unit": "piece" },
+            { "name": "Besan Cheela", "calories": 180, "unit": "piece" },
+            { "name": "Aloo Paratha", "calories": 280, "unit": "piece" },
+            { "name": "Paneer Paratha", "calories": 320, "unit": "piece" },
+            { "name": "Gobhi Paratha", "calories": 260, "unit": "piece" },
+            { "name": "Mooli Paratha", "calories": 250, "unit": "piece" },
+            { "name": "Bathua Paratha", "calories": 245, "unit": "piece" },
+            { "name": "Makki di Roti", "calories": 130, "unit": "piece" },
+            { "name": "Stuffed Kulcha", "calories": 200, "unit": "piece" },
+            { "name": "Sweet Suji Cheela", "calories": 200, "unit": "piece" },
+            { "name": "Roti", "calories": 110, "unit": "piece" },
+            { "name": "Chapati", "calories": 110, "unit": "piece" },
+            { "name": "Bread", "calories": 70, "unit": "slice" }
+          ],
+          "complete_dishes": [
+            { "name": "Sabudana Khichdi", "calories": 200, "unit": "cup" },
+            { "name": "Vegetable Upma", "calories": 225, "unit": "cup" },
+            { "name": "Poha", "calories": 180, "unit": "cup" },
+            { "name": "Moong Dal Khichdi", "calories": 250, "unit": "cup" }
+          ]
+        },
+        "non_veg": {
+          "core_items": [
+            { "name": "Lavasa Bread", "calories": 80, "unit": "piece" },
+            { "name": "Girda", "calories": 120, "unit": "piece" },
+            { "name": "Chana Dal Cheela", "calories": 190, "unit": "piece" },
+            { "name": "Besan Cheela", "calories": 180, "unit": "piece" },
+            { "name": "Aloo Paratha", "calories": 280, "unit": "piece" },
+            { "name": "Gobhi Paratha", "calories": 260, "unit": "piece" },
+            { "name": "Mooli Paratha", "calories": 250, "unit": "piece" },
+            { "name": "Bathua Paratha", "calories": 245, "unit": "piece" },
+            { "name": "Makki di Roti", "calories": 130, "unit": "piece" },
+            { "name": "Stuffed Kulcha", "calories": 200, "unit": "piece" },
+            { "name": "Sweet Suji Cheela", "calories": 200, "unit": "piece" },
+            { "name": "Roti", "calories": 110, "unit": "piece" },
+            { "name": "Chapati", "calories": 110, "unit": "piece" },
+            { "name": "Bread", "calories": 70, "unit": "slice" }
+          ],
+          "complete_dishes": [
+            { "name": "Sabudana Khichdi", "calories": 200, "unit": "cup" },
+            { "name": "Vegetable Upma", "calories": 225, "unit": "cup" },
+            { "name": "Poha", "calories": 180, "unit": "cup" },
+            { "name": "Moong Dal Khichdi", "calories": 250, "unit": "cup" },
+            { "name": "Anda Pulao", "calories": 300, "unit": "cup" }
+          ]
+        },
+        "vegan": {
+          "core_items": [
+            { "name": "Lavasa Bread ", "calories": 75, "unit": "piece" },
+            { "name": "Girda ", "calories": 115, "unit": "piece" },
+            { "name": "Chana Dal Cheela ", "calories": 185, "unit": "piece" },
+            { "name": "Besan Cheela ", "calories": 175, "unit": "piece" },
+            { "name": "Aloo Paratha ", "calories": 275, "unit": "piece" },
+            { "name": "Gobhi Paratha ", "calories": 255, "unit": "piece" },
+            { "name": "Mooli Paratha ", "calories": 245, "unit": "piece" },
+            { "name": "Bathua Paratha ", "calories": 240, "unit": "piece" },
+            { "name": "Makki di Roti ", "calories": 125, "unit": "piece" },
+            { "name": "Stuffed Kulcha ", "calories": 195, "unit": "piece" },
+            { "name": "Sweet Suji Cheela ", "calories": 195, "unit": "piece" },
+            { "name": "Roti ", "calories": 105, "unit": "piece" },
+            { "name": "Chapati ", "calories": 105, "unit": "piece" },
+            { "name": "Bread ", "calories": 65, "unit": "slice" }
+          ],
+          "complete_dishes": [
+            { "name": "Sabudana Khichdi ", "calories": 195, "unit": "cup" },
+            { "name": "Vegetable Upma ", "calories": 220, "unit": "cup" },
+            { "name": "Poha ", "calories": 175, "unit": "cup" },
+            { "name": "Moong Dal Khichdi ", "calories": 245, "unit": "cup" }
+          ]
+        }
       },
       "veg_items": {
         "gravy": [
-          "Aloo Curry (Gravy)",
-          "Chana Dal with Curry",
-          "Mild Rajma Curry",
-          "Sheer Chai",
-          "Noon Chai",
-          "Kahwa"
+          { "name": "Aloo Curry (Gravy)", "calories": 0.8, "unit": "gram" },
+          { "name": "Chana Dal with Curry", "calories": 0.9, "unit": "gram" },
+          { "name": "Mild Rajma Curry", "calories": 1.0, "unit": "gram" },
+          { "name": "Sheer Chai", "calories": 0.4, "unit": "gram" },
+          { "name": "Noon Chai", "calories": 0.4, "unit": "gram" },
+          { "name": "Kahwa", "calories": 0.0, "unit": "gram" }
         ]
       },
-
       "non_veg_items": {
         "gravy": [
-          "Egg Curry (Light)",
-          "Chicken Curry (Light)",
-          "Anda Pulao"
+          { "name": "Egg Curry (Light)", "calories": 0.9, "unit": "gram" },
+          { "name": "Chicken Curry (Light)", "calories": 1.2, "unit": "gram" }
+        ]
+      },
+      "vegan_items": {
+        "gravy": [
+          { "name": "Aloo Curry (Gravy, Vegan)", "calories": 0.8, "unit": "gram" },
+          { "name": "Chana Dal with Curry ", "calories": 0.9, "unit": "gram" },
+          { "name": "Mild Rajma Curry ", "calories": 1.0, "unit": "gram" },
+          { "name": "Kahwa ", "calories": 0.0, "unit": "gram" }
         ]
       }
     },
-
     "lunch": {
-      "veg": {
+      "base_items": {
+        "veg": {
+          "core_items": [
+            { "name": "Rice", "calories": 180, "unit": "cup" },
+            { "name": "Lavasa Bread", "calories": 80, "unit": "piece" }
+          ],
+          "complete_dishes": [
+            { "name": "Pudina Rice", "calories": 200, "unit": "cup" },
+            { "name": "Zafrani Rice", "calories": 280, "unit": "cup" },
+            { "name": "Kashmiri Vegetable Tehar", "calories": 260, "unit": "cup" },
+            { "name": "Vegetable Biryani", "calories": 255, "unit": "cup" }
+          ]
+        },
+        "non_veg": {
+          "core_items": [
+            { "name": "Rice", "calories": 180, "unit": "cup" },
+            { "name": "Lavasa Bread", "calories": 80, "unit": "piece" }
+          ],
+          "complete_dishes": [
+            { "name": "Pudina Rice", "calories": 200, "unit": "cup" },
+            { "name": "Zafrani Rice", "calories": 280, "unit": "cup" },
+            { "name": "Kashmiri Vegetable Tehar", "calories": 260, "unit": "cup" },
+            { "name": "Vegetable Biryani", "calories": 255, "unit": "cup" },
+            { "name": "Chicken Tehar", "calories": 350, "unit": "cup" },
+            { "name": "Chicken Pulao", "calories": 340, "unit": "cup" },
+            { "name": "Mutton Pulao", "calories": 360, "unit": "cup" },
+            { "name": "Egg Biryani", "calories": 320, "unit": "cup" },
+            { "name": "Chicken Biryani", "calories": 350, "unit": "cup" },
+            { "name": "Mutton Biryani", "calories": 380, "unit": "cup" }
+          ]
+        },
+        "vegan": {
+          "core_items": [
+            { "name": "Rice ", "calories": 175, "unit": "cup" },
+            { "name": "Lavasa Bread ", "calories": 75, "unit": "piece" }
+          ],
+          "complete_dishes": [
+            { "name": "Pudina Rice ", "calories": 195, "unit": "cup" },
+            { "name": "Zafrani Rice ", "calories": 275, "unit": "cup" },
+            { "name": "Kashmiri Vegetable Tehar ", "calories": 255, "unit": "cup" },
+            { "name": "Vegetable Biryani ", "calories": 250, "unit": "cup" }
+          ]
+        }
+      },
+      "veg_items": {
         "dry": [
-          "Aloo Baingan",
-          "Mix Veg Curry (Dry)",
-          "Kashmiri Khatte Aloo",
-          "Baingan Achari",
-          "Aloo Methi",
-          "Turnip Curry (Dry)",
-          "Gobi Masala",
-          "Bhindi Do Pyaza",
-          "Stuffed Capsicum",
-          "Aloo Nadru (Dry)",
-          "Matar Paneer (Dry Version)",
-          "Pudina Rice (Dry Base)"
+          { "name": "Aloo Baingan", "calories": 1.1, "unit": "gram" },
+          { "name": "Mix Veg Curry (Dry)", "calories": 0.7, "unit": "gram" },
+          { "name": "Kashmiri Khatte Aloo", "calories": 1.1, "unit": "gram" },
+          { "name": "Baingan Achari", "calories": 1.0, "unit": "gram" },
+          { "name": "Aloo Methi", "calories": 1.1, "unit": "gram" },
+          { "name": "Turnip Curry (Dry)", "calories": 0.6, "unit": "gram" },
+          { "name": "Gobi Masala", "calories": 1.0, "unit": "gram" },
+          { "name": "Bhindi Do Pyaza", "calories": 0.9, "unit": "gram" },
+          { "name": "Stuffed Capsicum", "calories": 200, "unit": "piece" },
+          { "name": "Aloo Nadru (Dry)", "calories": 1.0, "unit": "gram" },
+          { "name": "Matar Paneer (Dry Version)", "calories": 1.6, "unit": "gram" }
         ],
         "gravy": [
-          "Nadru Yakhni",
-          "Rajma with Rice",
-          "Chana Dal with Tamatar",
-          "Dum Aloo (Kashmiri Style)",
-          "Khatte Baingan",
-          "Palak Paneer",
-          "Paneer Rogan Josh (Veg)",
-          "Nadru Palak",
-          "Haak Saag",
-          "Tama Curry",
-          "Kaddu ki Sabzi",
-          "Tamatar Chaman",
-          "Paneer Kofta",
-          "Chok Wangun",
-          "Rajma Gogji",
-          "Turnip Curry (Gravy)",
-          "Vegetable Yakhni",
-          "Kashmiri Vegetable Tehar",
-          "Lauki Tamatar",
-          "Chana Masala",
-          "Chaman Qaliya",
-          "Tofu Masala",
-          "Moong Dal",
-          "Vegetable Biryani",
-          "Kashmiri Dal",
-          "Zafrani Rice"
+          { "name": "Rajma", "calories": 1.1, "unit": "gram" },
+          { "name": "Nadru Yakhni", "calories": 0.7, "unit": "gram" },
+          { "name": "Chana Dal with Tamatar", "calories": 0.9, "unit": "gram" },
+          { "name": "Dum Aloo (Kashmiri Style)", "calories": 1.1, "unit": "gram" },
+          { "name": "Khatte Baingan", "calories": 0.7, "unit": "gram" },
+          { "name": "Palak Paneer", "calories": 1.2, "unit": "gram" },
+          { "name": "Paneer Rogan Josh (Veg)", "calories": 1.3, "unit": "gram" },
+          { "name": "Nadru Palak", "calories": 0.7, "unit": "gram" },
+          { "name": "Haak Saag", "calories": 0.5, "unit": "gram" },
+          { "name": "Tama Curry", "calories": 0.6, "unit": "gram" },
+          { "name": "Kaddu ki Sabzi", "calories": 0.6, "unit": "gram" },
+          { "name": "Tamatar Chaman", "calories": 1.2, "unit": "gram" },
+          { "name": "Paneer Kofta", "calories": 1.3, "unit": "gram" },
+          { "name": "Chok Wangun", "calories": 0.7, "unit": "gram" },
+          { "name": "Rajma Gogji", "calories": 1.1, "unit": "gram" },
+          { "name": "Turnip Curry (Gravy)", "calories": 0.5, "unit": "gram" },
+          { "name": "Vegetable Yakhni", "calories": 0.7, "unit": "gram" },
+          { "name": "Lauki Tamatar", "calories": 0.6, "unit": "gram" },
+          { "name": "Chana Masala", "calories": 1.1, "unit": "gram" },
+          { "name": "Chaman Qaliya", "calories": 1.3, "unit": "gram" },
+          { "name": "Tofu Masala", "calories": 0.9, "unit": "gram" },
+          { "name": "Moong Dal", "calories": 0.7, "unit": "gram" },
+          { "name": "Kashmiri Dal", "calories": 0.8, "unit": "gram" }
         ]
       },
-
-      "non_veg": {
+      "non_veg_items": {
         "dry": [
-          "Tabak Maaz",
-          "Spicy Grilled Chicken",
-          "Fish Fry",
-          "Kebabs with Lavasa",
-          "Tandoori Chicken",
-          "Grilled Trout"
+          { "name": "Tabak Maaz", "calories": 1.9, "unit": "gram" },
+          { "name": "Spicy Grilled Chicken", "calories": 300, "unit": "serving" },
+          { "name": "Fish Fry", "calories": 175, "unit": "piece" },
+          { "name": "Kebabs", "calories": 250, "unit": "serving" },
+          { "name": "Tandoori Chicken", "calories": 300, "unit": "serving" },
+          { "name": "Grilled Trout", "calories": 220, "unit": "piece" }
         ],
         "gravy": [
-          "Rogan Josh (Mutton)",
-          "Yakhni (Mutton)",
-          "Gushtaba",
-          "Rista",
-          "Kashmiri Chicken Curry",
-          "Methi Maaz",
-          "Kokur Yakhni",
-          "Mutton Korma",
-          "Chicken Korma",
-          "Kaliya (Yellow Mutton Curry)",
-          "Fish Curry",
-          "Wazwan-style Chicken",
-          "Chicken Tehar",
-          "Egg Curry",
-          "Keema Mutter",
-          "Mutton Saag",
-          "Chicken Saag",
-          "Mutton Do Pyaza",
-          "Chicken Rogan Josh",
-          "Egg Biryani",
-          "Chicken Biryani",
-          "Mutton Biryani",
-          "Mutton Kofta",
-          "Chicken Kofta",
-          "Boiled Egg Curry",
-          "Chicken Pulao",
-          "Mutton Pulao",
-          "Keema Kaleji",
-          "Rogan Anda",
-          "Chicken Rista",
-          "Stuffed Chicken Breast",
-          "Mutton Paya",
-          "Chicken Handi"
+          { "name": "Rogan Josh (Mutton)", "calories": 1.5, "unit": "gram" },
+          { "name": "Yakhni (Mutton)", "calories": 1.3, "unit": "gram" },
+          { "name": "Gushtaba", "calories": 1.6, "unit": "gram" },
+          { "name": "Rista", "calories": 1.5, "unit": "gram" },
+          { "name": "Kashmiri Chicken Curry", "calories": 1.3, "unit": "gram" },
+          { "name": "Methi Maaz", "calories": 1.4, "unit": "gram" },
+          { "name": "Kokur Yakhni", "calories": 1.2, "unit": "gram" },
+          { "name": "Mutton Korma", "calories": 1.5, "unit": "gram" },
+          { "name": "Chicken Korma", "calories": 1.4, "unit": "gram" },
+          { "name": "Kaliya (Yellow Mutton Curry)", "calories": 1.5, "unit": "gram" },
+          { "name": "Fish Curry", "calories": 1.2, "unit": "gram" },
+          { "name": "Wazwan-style Chicken", "calories": 1.3, "unit": "gram" },
+          { "name": "Egg Curry", "calories": 0.9, "unit": "gram" },
+          { "name": "Keema Mutter", "calories": 1.6, "unit": "gram" },
+          { "name": "Mutton Saag", "calories": 1.4, "unit": "gram" },
+          { "name": "Chicken Saag", "calories": 1.3, "unit": "gram" },
+          { "name": "Mutton Do Pyaza", "calories": 1.5, "unit": "gram" },
+          { "name": "Chicken Rogan Josh", "calories": 1.5, "unit": "gram" },
+          { "name": "Mutton Kofta", "calories": 1.5, "unit": "gram" },
+          { "name": "Chicken Kofta", "calories": 1.4, "unit": "gram" },
+          { "name": "Boiled Egg Curry", "calories": 0.9, "unit": "gram" },
+          { "name": "Keema Kaleji", "calories": 1.6, "unit": "gram" },
+          { "name": "Rogan Anda", "calories": 1.0, "unit": "gram" },
+          { "name": "Chicken Rista", "calories": 1.4, "unit": "gram" },
+          { "name": "Stuffed Chicken Breast", "calories": 350, "unit": "piece" },
+          { "name": "Mutton Paya", "calories": 1.6, "unit": "gram" },
+          { "name": "Chicken Handi", "calories": 1.4, "unit": "gram" }
+        ]
+      },
+      "vegan_items": {
+        "dry": [
+          { "name": "Aloo Baingan ", "calories": 1.1, "unit": "gram" },
+          { "name": "Mix Veg Curry (Dry, Vegan)", "calories": 0.7, "unit": "gram" },
+          { "name": "Kashmiri Khatte Aloo ", "calories": 1.1, "unit": "gram" },
+          { "name": "Baingan Achari ", "calories": 0.9, "unit": "gram" },
+          { "name": "Aloo Methi ", "calories": 1.1, "unit": "gram" },
+          { "name": "Turnip Curry (Dry, Vegan)", "calories": 0.5, "unit": "gram" },
+          { "name": "Gobi Masala ", "calories": 0.9, "unit": "gram" },
+          { "name": "Bhindi Do Pyaza ", "calories": 0.8, "unit": "gram" },
+          { "name": "Stuffed Capsicum ", "calories": 195, "unit": "piece" },
+          { "name": "Aloo Nadru (Dry, Vegan)", "calories": 1.0, "unit": "gram" }
+        ],
+        "gravy": [
+          { "name": "Rajma ", "calories": 1.0, "unit": "gram" },
+          { "name": "Nadru Yakhni ", "calories": 0.7, "unit": "gram" },
+          { "name": "Chana Dal with Tamatar ", "calories": 0.9, "unit": "gram" },
+          { "name": "Dum Aloo (Kashmiri Style, Vegan)", "calories": 1.1, "unit": "gram" },
+          { "name": "Khatte Baingan ", "calories": 0.7, "unit": "gram" },
+          { "name": "Nadru Palak ", "calories": 0.6, "unit": "gram" },
+          { "name": "Haak Saag ", "calories": 0.5, "unit": "gram" },
+          { "name": "Tama Curry ", "calories": 0.6, "unit": "gram" },
+          { "name": "Kaddu ki Sabzi ", "calories": 0.6, "unit": "gram" },
+          { "name": "Chok Wangun ", "calories": 0.7, "unit": "gram" },
+          { "name": "Rajma Gogji ", "calories": 1.0, "unit": "gram" },
+          { "name": "Turnip Curry (Gravy, Vegan)", "calories": 0.5, "unit": "gram" },
+          { "name": "Vegetable Yakhni ", "calories": 0.6, "unit": "gram" },
+          { "name": "Lauki Tamatar ", "calories": 0.6, "unit": "gram" },
+          { "name": "Chana Masala ", "calories": 1.0, "unit": "gram" },
+          { "name": "Tofu Masala ", "calories": 0.9, "unit": "gram" },
+          { "name": "Moong Dal ", "calories": 0.7, "unit": "gram" },
+          { "name": "Kashmiri Dal ", "calories": 0.7, "unit": "gram" }
         ]
       }
     },
-
     "dinner": {
-      "veg": {
+      "base_items": {
+        "veg": {
+          "core_items": [
+            { "name": "Rice", "calories": 180, "unit": "cup" },
+            { "name": "Jeera Rice", "calories": 200, "unit": "cup" }
+          ],
+          "complete_dishes": [
+            { "name": "Kashmiri Pulav", "calories": 260, "unit": "cup" },
+            { "name": "Vegetable Tehar", "calories": 260, "unit": "cup" },
+            { "name": "Kashmiri Veg Biryani", "calories": 255, "unit": "cup" },
+            { "name": "Zafrani Tehar", "calories": 280, "unit": "cup" },
+            { "name": "Kashmiri Khichdi", "calories": 250, "unit": "cup" }
+          ]
+        },
+        "non_veg": {
+          "core_items": [
+            { "name": "Rice", "calories": 180, "unit": "cup" },
+            { "name": "Jeera Rice", "calories": 200, "unit": "cup" },
+            { "name": "Keema Stuffed Lavasa", "calories": 400, "unit": "serving" },
+            { "name": "Keema Paratha", "calories": 380, "unit": "piece" }
+          ],
+          "complete_dishes": [
+            { "name": "Kashmiri Pulav", "calories": 260, "unit": "cup" },
+            { "name": "Vegetable Tehar", "calories": 260, "unit": "cup" },
+            { "name": "Kashmiri Veg Biryani", "calories": 255, "unit": "cup" },
+            { "name": "Zafrani Tehar", "calories": 280, "unit": "cup" },
+            { "name": "Kashmiri Khichdi", "calories": 250, "unit": "cup" },
+            { "name": "Chicken Pulao", "calories": 340, "unit": "cup" },
+            { "name": "Mutton Pulao", "calories": 360, "unit": "cup" },
+            { "name": "Egg Biryani", "calories": 320, "unit": "cup" },
+            { "name": "Mutton Biryani", "calories": 380, "unit": "cup" },
+            { "name": "Chicken Biryani", "calories": 350, "unit": "cup" }
+          ]
+        },
+        "vegan": {
+          "core_items": [
+            { "name": "Rice ", "calories": 175, "unit": "cup" },
+            { "name": "Jeera Rice ", "calories": 195, "unit": "cup" }
+          ],
+          "complete_dishes": [
+            { "name": "Kashmiri Pulav ", "calories": 255, "unit": "cup" },
+            { "name": "Vegetable Tehar ", "calories": 255, "unit": "cup" },
+            { "name": "Kashmiri Veg Biryani ", "calories": 250, "unit": "cup" },
+            { "name": "Zafrani Tehar ", "calories": 275, "unit": "cup" },
+            { "name": "Kashmiri Khichdi ", "calories": 245, "unit": "cup" }
+          ]
+        }
+      },
+      "veg_items": {
         "dry": [
-          "Turnip Sabzi",
-          "Methi Aloo",
-          "Gobhi Aloo",
-          "Stuffed Capsicum",
-          "Bhindi Masala",
-          "Mixed Sabzi",
-          "Aloo Baingan",
-          "Masala Baingan",
-          "Tandoori Paneer",
-          "Spinach Kofta (Dry)"
+          { "name": "Turnip Sabzi", "calories": 0.6, "unit": "gram" },
+          { "name": "Methi Aloo", "calories": 1.1, "unit": "gram" },
+          { "name": "Gobhi Aloo", "calories": 1.0, "unit": "gram" },
+          { "name": "Stuffed Capsicum", "calories": 200, "unit": "piece" },
+          { "name": "Bhindi Masala", "calories": 0.8, "unit": "gram" },
+          { "name": "Mixed Sabzi", "calories": 0.7, "unit": "gram" },
+          { "name": "Aloo Baingan", "calories": 1.1, "unit": "gram" },
+          { "name": "Masala Baingan", "calories": 0.9, "unit": "gram" },
+          { "name": "Tandoori Paneer", "calories": 1.6, "unit": "gram" },
+          { "name": "Spinach Kofta (Dry)", "calories": 1.3, "unit": "gram" }
         ],
         "gravy": [
-          "Chaman Qaliya",
-          "Haak Saag",
-          "Dum Aloo",
-          "Tamatar Chaman",
-          "Chok Wangun",
-          "Nadru Yakhni",
-          "Rajma",
-          "Kashmiri Pulav",
-          "Vegetable Tehar",
-          "Kashmiri Veg Biryani",
-          "Lauki Curry",
-          "Chana Dal",
-          "Toor Dal Fry",
-          "Moong Dal Tadka",
-          "Vegetable Korma",
-          "Paneer Butter Masala",
-          "Palak Paneer",
-          "Ghiya Tamatar",
-          "Vegetable Stew",
-          "Kashmiri Nadru Curry",
-          "Zafrani Tehar",
-          "Kashmiri Khichdi",
-          "Jeera Rice with Dahi",
-          "Raita with Tehar"
+          { "name": "Raita", "calories": 0.5, "unit": "gram" },
+          { "name": "Dahi", "calories": 0.4, "unit": "gram" },
+          { "name": "Chaman Qaliya", "calories": 1.3, "unit": "gram" },
+          { "name": "Haak Saag", "calories": 0.5, "unit": "gram" },
+          { "name": "Dum Aloo", "calories": 1.1, "unit": "gram" },
+          { "name": "Tamatar Chaman", "calories": 1.2, "unit": "gram" },
+          { "name": "Chok Wangun", "calories": 0.7, "unit": "gram" },
+          { "name": "Nadru Yakhni", "calories": 0.7, "unit": "gram" },
+          { "name": "Rajma", "calories": 1.1, "unit": "gram" },
+          { "name": "Lauki Curry", "calories": 0.5, "unit": "gram" },
+          { "name": "Chana Dal", "calories": 0.9, "unit": "gram" },
+          { "name": "Toor Dal Fry", "calories": 0.8, "unit": "gram" },
+          { "name": "Moong Dal Tadka", "calories": 0.8, "unit": "gram" },
+          { "name": "Vegetable Korma", "calories": 1.2, "unit": "gram" },
+          { "name": "Paneer Butter Masala", "calories": 1.4, "unit": "gram" },
+          { "name": "Palak Paneer", "calories": 1.2, "unit": "gram" },
+          { "name": "Ghiya Tamatar", "calories": 0.6, "unit": "gram" },
+          { "name": "Vegetable Stew", "calories": 0.7, "unit": "gram" },
+          { "name": "Kashmiri Nadru Curry", "calories": 0.7, "unit": "gram" }
         ]
       },
-
-      "non_veg": {
+      "non_veg_items": {
         "dry": [
-          "Tabak Maaz",
-          "Chicken Tikka",
-          "Fish Fry",
-          "Grilled Fish",
-          "Kebabs with Tehar",
-          "Tandoori Chicken",
-          "Grilled Trout",
-          "Keema Stuffed Lavasa",
-          "Keema Paratha",
-          "Egg Pakora"
+          { "name": "Tabak Maaz", "calories": 1.9, "unit": "gram" },
+          { "name": "Chicken Tikka", "calories": 280, "unit": "serving" },
+          { "name": "Fish Fry", "calories": 175, "unit": "piece" },
+          { "name": "Grilled Fish", "calories": 200, "unit": "piece" },
+          { "name": "Kebabs", "calories": 250, "unit": "serving" },
+          { "name": "Tandoori Chicken", "calories": 300, "unit": "serving" },
+          { "name": "Grilled Trout", "calories": 220, "unit": "piece" },
+          { "name": "Egg Pakora", "calories": 200, "unit": "piece" }
         ],
         "gravy": [
-          "Mutton Rogan Josh",
-          "Chicken Rogan Josh",
-          "Gushtaba",
-          "Rista",
-          "Mutton Yakhni",
-          "Chicken Yakhni",
-          "Mutton Curry",
-          "Kokur Curry",
-          "Chicken Do Pyaza",
-          "Fish Curry",
-          "Mutton Kofta",
-          "Mutton Kaliya",
-          "Keema Kaleji",
-          "Chicken Tikka Masala",
-          "Chicken Pulao",
-          "Mutton Pulao",
-          "Egg Biryani",
-          "Mutton Biryani",
-          "Chicken Biryani",
-          "Paya Curry",
-          "Chicken Korma",
-          "Mutton Handi",
-          "Anda Bhurji (Gravy Style)",
-          "Rogan Anda",
-          "Mutton Rista",
-          "Chicken Gushtaba",
-          "Keema Matar"
+          { "name": "Mutton Rogan Josh", "calories": 1.5, "unit": "gram" },
+          { "name": "Chicken Rogan Josh", "calories": 1.5, "unit": "gram" },
+          { "name": "Gushtaba", "calories": 1.6, "unit": "gram" },
+          { "name": "Rista", "calories": 1.5, "unit": "gram" },
+          { "name": "Mutton Yakhni", "calories": 1.3, "unit": "gram" },
+          { "name": "Chicken Yakhni", "calories": 1.2, "unit": "gram" },
+          { "name": "Mutton Curry", "calories": 1.4, "unit": "gram" },
+          { "name": "Kokur Curry", "calories": 1.2, "unit": "gram" },
+          { "name": "Chicken Do Pyaza", "calories": 1.4, "unit": "gram" },
+          { "name": "Fish Curry", "calories": 1.2, "unit": "gram" },
+          { "name": "Mutton Kofta", "calories": 1.5, "unit": "gram" },
+          { "name": "Mutton Kaliya", "calories": 1.5, "unit": "gram" },
+          { "name": "Keema Kaleji", "calories": 1.6, "unit": "gram" },
+          { "name": "Chicken Tikka Masala", "calories": 1.5, "unit": "gram" },
+          { "name": "Paya Curry", "calories": 1.6, "unit": "gram" },
+          { "name": "Chicken Korma", "calories": 1.4, "unit": "gram" },
+          { "name": "Mutton Handi", "calories": 1.5, "unit": "gram" },
+          { "name": "Anda Bhurji (Gravy Style)", "calories": 1.0, "unit": "gram" },
+          { "name": "Rogan Anda", "calories": 1.0, "unit": "gram" },
+          { "name": "Mutton Rista", "calories": 1.5, "unit": "gram" },
+          { "name": "Chicken Gushtaba", "calories": 1.5, "unit": "gram" },
+          { "name": "Keema Matar", "calories": 1.6, "unit": "gram" }
+        ]
+      },
+      "vegan_items": {
+        "dry": [
+          { "name": "Turnip Sabzi ", "calories": 0.5, "unit": "gram" },
+          { "name": "Methi Aloo ", "calories": 1.1, "unit": "gram" },
+          { "name": "Gobhi Aloo ", "calories": 1.0, "unit": "gram" },
+          { "name": "Stuffed Capsicum ", "calories": 195, "unit": "piece" },
+          { "name": "Bhindi Masala ", "calories": 0.8, "unit": "gram" },
+          { "name": "Mixed Sabzi ", "calories": 0.7, "unit": "gram" },
+          { "name": "Aloo Baingan ", "calories": 1.1, "unit": "gram" },
+          { "name": "Masala Baingan ", "calories": 0.9, "unit": "gram" }
+        ],
+        "gravy": [
+          { "name": "Haak Saag ", "calories": 0.5, "unit": "gram" },
+          { "name": "Dum Aloo ", "calories": 1.0, "unit": "gram" },
+          { "name": "Chok Wangun ", "calories": 0.7, "unit": "gram" },
+          { "name": "Nadru Yakhni ", "calories": 0.7, "unit": "gram" },
+          { "name": "Rajma ", "calories": 1.0, "unit": "gram" },
+          { "name": "Lauki Curry ", "calories": 0.5, "unit": "gram" },
+          { "name": "Chana Dal ", "calories": 0.9, "unit": "gram" },
+          { "name": "Toor Dal Fry ", "calories": 0.7, "unit": "gram" },
+          { "name": "Moong Dal Tadka ", "calories": 0.8, "unit": "gram" },
+          { "name": "Vegetable Korma ", "calories": 1.2, "unit": "gram" },
+          { "name": "Ghiya Tamatar ", "calories": 0.6, "unit": "gram" },
+          { "name": "Vegetable Stew ", "calories": 0.6, "unit": "gram" },
+          { "name": "Kashmiri Nadru Curry ", "calories": 0.7, "unit": "gram" }
         ]
       }
     }
-}
+  }

@@ -1,0 +1,134 @@
+{
+  "system_prompt": "You are a precise AI Nutritionist. Generate a 7-Day Meal Plan where daily calories (Breakfast + Snack 1 + Lunch + Snack 2 + Dinner) match the target calorie within ±50 kcal. Use ONLY items from the provided dataset with their embedded calorie values. CRITICAL: The sum of calories for each day MUST equal the target calorie. If your calculation shows a different total, you MUST adjust quantities until it matches. FAILURE TO MATCH TARGET CALORIES IS UNACCEPTABLE - YOU MUST RECALCULATE AND ADJUST QUANTITIES. BEFORE OUTPUTTING EACH DAY, VERIFY: Breakfast + Snack 1 + Lunch + Snack 2 + Dinner = Target ±50. If not, adjust ALL quantities proportionally and recalculate.",
+  "user_prompt": {
+    "target_calorie": "{target_calorie}",
+    "allergies": "{allergies}",
+    "health_conditions": "{health_conditions}",
+    "diet_type": "{diet_type}",
+    "food_dataset": "{food_dataset_text}",
+    "snacks_dataset": "{snacks_text}",
+    "meal_structure_rules": {
+          "non_veg": {
+            "breakfast": {
+          "option_a": "1 Core Item (from breakfast.base_items.core_items) + 1 Non-Veg Gravy (from breakfast.non_veg_items.gravy)",
+          "option_b": "1 Complete Dish (from breakfast.base_items.complete_dishes) + 1 Non-Veg Gravy (from breakfast.non_veg_items.gravy)"
+            },
+            "lunch": {
+          "option_a": "1 Core Item (from lunch.base_items.core_items) + 1 Non-Veg Gravy (from lunch.non_veg_items.gravy) + 1 Non-Veg Dry (from lunch.non_veg_items.dry)",
+          "option_b": "1 Complete Dish (from lunch.base_items.complete_dishes) + 1 Non-Veg Gravy (from lunch.non_veg_items.gravy)"
+            },
+            "dinner": {
+          "option_a": "1 Core Item (from dinner.base_items.core_items) + 1 Non-Veg Gravy (from dinner.non_veg_items.gravy)",
+          "option_b": "1 Complete Dish (from dinner.base_items.complete_dishes) + 1 Non-Veg Gravy (from dinner.non_veg_items.gravy)"
+        }
+          },
+          "veg": {
+            "breakfast": {
+          "option_a": "1 Core Item (from breakfast.base_items.core_items) + 1 Veg Gravy (from breakfast.veg_items.gravy)",
+          "option_b": "1 Complete Dish (from breakfast.base_items.complete_dishes) + 1 Veg Gravy (from breakfast.veg_items.gravy)"
+        },
+        "lunch": {
+          "option_a": "1 Core Item (from lunch.base_items.core_items) + 1 Veg Gravy (from lunch.veg_items.gravy) + 1 Veg Dry (from lunch.veg_items.dry)",
+          "option_b": "1 Complete Dish (from lunch.base_items.complete_dishes) + 1 Veg Gravy (from lunch.veg_items.gravy)"
+        },
+        "dinner": {
+          "option_a": "1 Core Item (from dinner.base_items.core_items) + 1 Veg Gravy (from dinner.veg_items.gravy)",
+          "option_b": "1 Complete Dish (from dinner.base_items.complete_dishes) + 1 Veg Gravy (from dinner.veg_items.gravy)"
+        }
+      },
+      "vegan": {
+        "breakfast": {
+          "option_a": "1 Core Item (from breakfast.base_items.core_items) + 1 Vegan Gravy (from breakfast.vegan_items.gravy)",
+          "option_b": "1 Complete Dish (from breakfast.base_items.complete_dishes) + 1 Vegan Gravy (from breakfast.vegan_items.gravy)"
+        },
+        "lunch": {
+          "option_a": "1 Core Item (from lunch.base_items.core_items) + 1 Vegan Gravy (from lunch.vegan_items.gravy) + 1 Vegan Dry (from lunch.vegan_items.dry)",
+          "option_b": "1 Complete Dish (from lunch.base_items.complete_dishes) + 1 Vegan Gravy (from lunch.vegan_items.gravy)"
+        },
+        "dinner": {
+          "option_a": "1 Core Item (from dinner.base_items.core_items) + 1 Vegan Gravy (from dinner.vegan_items.gravy)",
+          "option_b": "1 Complete Dish (from dinner.base_items.complete_dishes) + 1 Vegan Gravy (from dinner.vegan_items.gravy)"
+        }
+      }
+    },
+    "calorie_calculation_process": {
+      "title": "MANDATORY CALORIE CALCULATION AND QUANTITY ADJUSTMENT PROCESS",
+      "steps": [
+        "STEP 1: For each day, select items according to meal structure rules (Option A or B).",
+        "STEP 2: Calculate initial calories: For each item, check the 'unit' field in the dataset. If unit is 'gram', multiply Quantity (in grams) × Calories (per gram). If unit is 'ml', multiply Quantity (in ml) × Calories (per ml). If unit is 'piece', 'cup', 'serving', 'tbsp', 'slice', 'bar', 'bowl', 'egg', 'medium', multiply Quantity × Calories (per unit). Sum all items in each meal.",
+        "STEP 3: Calculate daily total: Add Breakfast + Snack 1 + Lunch + Snack 2 + Dinner calories.",
+        "STEP 4: Compare with target: If daily total is BELOW {target_calorie} kcal, you MUST INCREASE quantities. If daily total is ABOVE {target_calorie} kcal, you MUST DECREASE quantities.",
+        "STEP 5: Adjust quantities: Increase or decrease quantities (can use decimals like 1.5, 2.5, 3.5, 4.5, or specific gram/ml values like 200g, 250ml, etc.) until daily total equals {target_calorie} ±50 kcal. YOU CANNOT OUTPUT A DAY UNTIL THE TOTAL MATCHES.",
+        "STEP 6: Verify: Recalculate daily total after adjustment. It MUST be between {target_calorie_min} and {target_calorie_max} kcal.",
+        "STEP 7: Repeat for all 7 days: Each day MUST independently meet the target calorie requirement.",
+        "STEP 8: FINAL VERIFICATION: For each day, manually add: Breakfast calories + Snack 1 calories + Lunch calories + Snack 2 calories + Dinner calories. This sum MUST equal {target_calorie} ±50 kcal. If it doesn't, go back and adjust quantities.",
+        "STEP 9: EXAMPLE CALCULATION: If target is {target_calorie} kcal and you calculate Day 1 as: Breakfast=400 + Snack1=150 + Lunch=600 + Snack2=50 + Dinner=500 = 1700 kcal, you are SHORT by {target_calorie_minus_1856} kcal. Calculate multiplier: {target_calorie} ÷ 1700 = {target_calorie_ratio}. Multiply ALL quantities by this factor. If Breakfast item has unit 'gram' and was 200g, make it 200 × {target_calorie_ratio} = ~{target_calorie_ratio}g. If item has unit 'piece' and was 2 pieces, make it 2 × {target_calorie_ratio} = ~{target_calorie_ratio} pieces. Recalculate until total = {target_calorie} ±50."
+      ],
+      "critical_notes": [
+        "UNIT TYPES: Items in the dataset have different units: 'gram' (calories per gram, e.g., 0.7 = 0.7 kcal/gram), 'ml' (calories per ml, e.g., 0.2 = 0.2 kcal/ml), 'piece', 'cup', 'serving', 'tbsp', 'slice', 'bar', 'bowl', 'egg', 'medium' (calories per unit). Always check the 'unit' field before calculating.",
+        "CALCULATION BY UNIT: For 'gram' unit: Total Calories = Quantity (in grams) × Calories (per gram). Example: 200g × 0.7 kcal/g = 140 kcal. For 'ml' unit: Total Calories = Quantity (in ml) × Calories (per ml). Example: 250ml × 0.2 kcal/ml = 50 kcal. For other units: Total Calories = Quantity × Calories (per unit).",
+        "QUANTITIES ARE NOT FIXED: You can use whole numbers (1, 2, 3, 4, 5), decimals (1.5, 2.5, 3.5, 4.5), or specific gram/ml values (150g, 200g, 250ml, 300ml, etc.) to reach the target.",
+        "DO NOT use quantity '1' for everything - adjust based on calorie needs. Most items will need quantities > 1 to reach {target_calorie} kcal.",
+        "If a meal has 200 kcal but you need 400 kcal, double the quantities (e.g., 200g becomes 400g, or 2 pieces becomes 4 pieces, or adjust multiple items).",
+        "If a meal has 500 kcal but you need 300 kcal, reduce quantities by 0.6x (e.g., 200g becomes 120g, or 2 pieces becomes 1.2 pieces).",
+        "CALCULATE FIRST, THEN ADJUST: Always calculate the total first, then adjust quantities to match target. DO NOT GUESS.",
+        "EACH DAY IS INDEPENDENT: Day 1 total = {target_calorie} ±50, Day 2 total = {target_calorie} ±50, and so on.",
+        "EXAMPLE CALCULATION: If target is {target_calorie} kcal and your day totals 1800 kcal, you need {target_calorie_minus_1856} more kcal. Calculate the multiplier: {target_calorie} ÷ 1800 = {target_calorie_ratio}. Multiply ALL quantities by {target_calorie_ratio} to reach the target. If an item was 200g, make it 200 × {target_calorie_ratio} = ~{target_calorie_ratio}g. If an item was 250ml, make it 250 × {target_calorie_ratio} = ~{target_calorie_ratio}ml.",
+        "NEVER OUTPUT A DAY WHERE THE SUM DOESN'T MATCH: If Breakfast=367.5 + Snack1=200 + Lunch=742 + Snack2=60 + Dinner=487 = 1856.5, this is WRONG and UNACCEPTABLE. You MUST adjust quantities until the sum equals {target_calorie} ±50.",
+        "CALCULATION CHECKLIST: Before outputting each day: (1) Check unit type for each item (gram/ml/piece/etc.), (2) Calculate each meal's calories using correct formula, (3) Add all meals together, (4) Compare with {target_calorie}, (5) If different, calculate multiplier and adjust ALL quantities, (6) Recalculate total, (7) Only output when sum equals {target_calorie} ±50.",
+        "MANDATORY: For EACH day, you MUST mentally calculate: Breakfast + Snack 1 + Lunch + Snack 2 + Dinner = {target_calorie} ±50. If it doesn't equal this, DO NOT OUTPUT that day. Adjust and recalculate.",
+        "TYPICAL QUANTITIES: For a target of {target_calorie} kcal, expect to use quantities like: 2-3 pieces for core items (piece unit), 200-300g for gravies/dry items (gram unit), 200-300ml for beverages (ml unit), 2-3 servings for snacks (serving unit). Adjust as needed based on calorie calculations."
+      ]
+    },
+    "critical_rules": [
+      "CRITICAL: For each meal, choose EITHER Option A OR Option B - NEVER both. NEVER combine Core Items with Complete Dishes.",
+      "CRITICAL: Items from breakfast category can ONLY be used in breakfast. Items from lunch category can ONLY be used in lunch. Items from dinner category can ONLY be used in dinner.",
+      "CRITICAL FOR NON-VEG: DO NOT use ANY items from veg_items or vegan_items sections. ONLY use items from non_veg_items sections for gravy and dry items.",
+      "CRITICAL FOR VEG: DO NOT use ANY items from non_veg_items or vegan_items sections. ONLY use items from veg_items sections for gravy and dry items.",
+      "CRITICAL FOR VEGAN: DO NOT use ANY items from veg_items or non_veg_items sections. ONLY use items from vegan_items sections for gravy and dry items.",
+      "CRITICAL: Use EXACT item names from the dataset - no generic names like 'Veg gravy' or 'Chicken gravy'.",
+      "ABSOLUTE NO-REPEAT RULE: Every food item name must be UNIQUE across all 7 days and all meals. Once used, it CANNOT appear again.",
+      "MANDATORY CALORIE MATCHING: Each day's total calories (Breakfast + Snack 1 + Lunch + Snack 2 + Dinner) MUST equal {target_calorie} ±50 kcal. This is NON-NEGOTIABLE. OUTPUTTING A DAY WITH INCORRECT TOTAL IS A CRITICAL ERROR.",
+      "MANDATORY QUANTITY ADJUSTMENT: You MUST adjust quantities (increase or decrease) to ensure daily totals match the target. Using quantity '1' for everything will NOT work. Most items will need quantities of 1.5, 2, 2.5, 3, or higher to reach {target_calorie} kcal.",
+      "CALCULATION FORMULA: For each item, check the 'unit' field: If unit is 'gram': Total Calories = Quantity (in grams) × Calories (per gram). If unit is 'ml': Total Calories = Quantity (in ml) × Calories (per ml). If unit is 'piece', 'cup', 'serving', 'tbsp', 'slice', 'bar', 'bowl', 'egg', 'medium': Total Calories = Quantity × Calories (per unit). Sum all items in meal for meal calories. Sum all meals for daily total.",
+      "QUANTITY FLEXIBILITY: Quantities can be whole numbers (1, 2, 3, 4), decimals (1.5, 2.5, 3.5), or specific gram/ml values (150g, 200g, 250ml, 300ml, etc.) - use whatever is needed to reach target calories. Always match the unit type: use grams for 'gram' unit items, ml for 'ml' unit items, and appropriate quantities for other units.",
+      "VERIFICATION REQUIRED: Before finalizing each day, calculate: Breakfast + Snack 1 + Lunch + Snack 2 + Dinner. If it's not {target_calorie} ±50 kcal, adjust quantities and recalculate.",
+      "CRITICAL: Each day's total calories MUST equal {target_calorie} ±50 kcal. The system will set [Total Calories] automatically - you do NOT need to output it.",
+      "DOUBLE-CHECK BEFORE OUTPUT: For each day, add up the calories you're outputting. If Breakfast=367.5 + Snack1=200 + Lunch=742 + Snack2=60 + Dinner=487 = 1856.5, STOP IMMEDIATELY. This is wrong. You MUST NOT output this. Calculate multiplier: {target_calorie} ÷ 1856.5 = {target_calorie_ratio}. Multiply ALL quantities by this factor, then recalculate. Only output when total = {target_calorie} ±50.",
+      "IF YOUR CALCULATION IS OFF: If you calculate a day and it totals 1800 kcal but target is {target_calorie} kcal, you are SHORT by {target_calorie_minus_1856} kcal. Calculate multiplier: {target_calorie} ÷ 1800 = {target_calorie_ratio}. Multiply ALL quantities (Breakfast items, Snack items, Lunch items, Dinner items) by {target_calorie_ratio}. Recalculate total. Repeat until total = {target_calorie} ±50.",
+      "WORKED EXAMPLE: Target = {target_calorie} kcal. If your initial calculation totals 1700 kcal, you are SHORT by {target_calorie_minus_1856} kcal. Calculate multiplier: {target_calorie} ÷ 1700 = {target_calorie_ratio}. Multiply ALL quantities (Breakfast, Snack1, Lunch, Snack2, Dinner) by {target_calorie_ratio}. Recalculate the total. It should now equal {target_calorie} ±50. THIS IS CORRECT.",
+      "ALLERGIES: {allergies} - Strictly avoid all foods containing these allergens.",
+      "HEALTH CONDITIONS: {health_conditions} - Select foods appropriate for this condition.",
+      "SNACKS: VEG users = Veg Snacks only. NON-VEG users = Non-Veg + Veg Snacks. VEGAN users = Vegan Snacks only. Include exactly 1 beverage per day.",
+      "ALTERNATION: Alternate between Option A and Option B across the 7 days for each meal type."
+    ],
+    "output_format": {
+      "title": "REQUIRED OUTPUT FORMAT - STRING ONLY",
+      "critical_instruction": "Output MUST be a single raw string using the bracketed format. NO introductory text, NO explanatory notes, NO separate sections, NO additional information. Start immediately with [Target weight]: and end with the last day's data. DO NOT include [Total Calories] in your output - it will be set automatically by the system.",
+      "format_template": "[Target weight]:[{target_weight}], [Total Carbs]:[val], [Total Fat]:[val], [Total Fiber]:[val], [Total Protein]:[val], [day 1]:[Breakfast]:[If Option A: Quantity unit Food Name (Core Item from breakfast) with Quantity unit Food Name (Gravy from breakfast) - EXACTLY 2 items, OR If Option B: Quantity unit  Food Name (Complete Dish from breakfast)  with Quantity unit Food Name (Gravy from breakfast) - EXACTLY 2 items][Short Name]:[Food Name, Food Name][Calories]:[val], [Snack 1]:[Quantity unit  Food Name][Short Name]:[Food Name][Calories]:[val], [Lunch]:[If Option A: Quantity unit Food Name (Core Item from lunch)  with Quantity unit Food Name (Gravy from lunch)  with Quantity unit Food Name (Dry from lunch) - EXACTLY 3 items, OR If Option B: Quantity unit Food Name (Complete Dish from lunch)  with Quantity unit  Food Name (Gravy from lunch) - EXACTLY 2 items][Short Name]:[Food Name, Food Name, Food Name (if Option A) OR Food Name, Food Name (if Option B)][Calories]:[val], [Snack 2]:[Quantity unit Food Name][Short Name]:[Food Name][Calories]:[val], [Dinner]:[If Option A: Quantity unit Food Name (Core Item from dinner)  with Quantity unit Food Name (Gravy from dinner) - EXACTLY 2 items, OR If Option B: Quantity unit Food Name (Complete Dish from dinner)  with Quantity unit Food Name (Gravy from dinner) - EXACTLY 2 items][Short Name]:[Food Name, Food Name][Calories]:[val], [day 2]:[...repeat...for 7 days...]",
+      "strict_forbidden": [
+        "DO NOT include any text before [Target weight]:",
+        "DO NOT include phrases like 'Here is a 7-day meal plan' or any introductory text",
+        "DO NOT include a separate [Beverage] section - beverages must be included in Snack 1 or Snack 2",
+        "DO NOT include 'Total Calories: X' after each day",
+        "DO NOT include [Total Calories] in your output - it is automatically set by the system",
+        "DO NOT include any notes, explanations, or additional information after the last day",
+        "DO NOT include line breaks or formatting that breaks the single string format",
+        "DO NOT add any text after the last day's data"
+      ],
+      "rules": [
+        "Start immediately with [Target weight]: - NO text before this",
+        "Output must be a SINGLE CONTINUOUS STRING with no line breaks or separators",
+        "For each day, sum of all meal calories (Breakfast + Snack 1 + Lunch + Snack 2 + Dinner) MUST equal {target_calorie} ±50 kcal. VERIFY THIS BEFORE OUTPUTTING.",
+        "Each day's meal calories MUST sum to {target_calorie} ±50 kcal - this is the target that each day must match. DO NOT output [Total Calories] - it is set automatically by the system.",
+        "Use EXACT item names from dataset - no generic names",
+        "ABSOLUTE RULE: No food item repeats across 7 days - each item name must be unique",
+        "Follow meal structure rules strictly - choose Option A or B for each meal",
+        "Calculate calories: Check item's 'unit' field. If 'gram': Quantity (g) × Calories (per gram). If 'ml': Quantity (ml) × Calories (per ml). Otherwise: Quantity × Calories (per unit)",
+        "Adjust quantities to match calorie targets without repeating items",
+        "Beverages are part of snacks, NOT a separate category",
+        "End output immediately after [day 7] data - NO additional text"
+      ]
+    }
+  }
+}
