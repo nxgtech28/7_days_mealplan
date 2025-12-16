@@ -16,20 +16,21 @@ app = FastAPI(title="Meal Planner API")
 
 # --- INITIALIZATION ---
 try:
-    config_path = os.path.join(os.path.dirname(__file__), "config.json")
-    if not os.path.exists(config_path):
-        print(f"⚠️ Warning: config.json not found at {config_path}")
-        GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-        GROQ_MODEL = "llama-3.3-70b-versatile"
-    else:
-        with open(config_path, 'r') as f:
-            content = f.read().strip()
-            if not content:
-                raise ValueError("config.json is empty")
-            config = json.loads(content)
-        
-        GROQ_API_KEY = config.get("groq_api_key")
-        GROQ_MODEL = config.get("model", "llama-3.3-70b-versatile")
+    # Priority: Environment variable > config.json
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+    GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    
+    # If not in environment, try config.json (for local development)
+    if not GROQ_API_KEY:
+        config_path = os.path.join(os.path.dirname(__file__), "config.json")
+        if os.path.exists(config_path):
+            with open(config_path, 'r') as f:
+                content = f.read().strip()
+                if content:
+                    config = json.loads(content)
+                    GROQ_API_KEY = config.get("groq_api_key", "")
+                    if not GROQ_MODEL or GROQ_MODEL == "llama-3.3-70b-versatile":
+                        GROQ_MODEL = config.get("model", "llama-3.3-70b-versatile")
 
     if not GROQ_API_KEY:
         print("⚠️ Warning: GROQ_API_KEY not found. API calls will fail.")
