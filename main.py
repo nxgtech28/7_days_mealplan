@@ -82,10 +82,53 @@ def detect_regional_preferences(input_text: str) -> tuple:
     
     # Detect diet type: vegan > vegetarian > non-veg
     diet_type = "non-veg"  # default
-    if any(keyword in input_lower for keyword in ['vegan', 'plant-based', 'no dairy', 'no eggs']):
-        diet_type = "vegan"
-    elif any(keyword in input_lower for keyword in ['veg only', 'vegetarian only', 'no non-veg', 'vegetarian']):
-        diet_type = "veg"
+    
+    # Try to parse JSON structure from input_text to extract cuisine preferences
+    try:
+        # Look for JSON-like structure in the input
+        if '{' in input_text and '}' in input_text:
+            # Try to extract and parse JSON from input
+            json_start = input_text.find('{')
+            json_end = input_text.rfind('}') + 1
+            if json_start < json_end:
+                json_str = input_text[json_start:json_end]
+                try:
+                    parsed = json.loads(json_str)
+                    # Check if cuisine field exists and contains 'veg'
+                    if 'cuisine' in parsed:
+                        cuisine = parsed['cuisine']
+                        if isinstance(cuisine, dict):
+                            # Check all values in cuisine dict for 'veg'
+                            for key, value in cuisine.items():
+                                if isinstance(value, list):
+                                    if 'veg' in [str(v).lower() for v in value]:
+                                        diet_type = "veg"
+                                        break
+                                elif isinstance(value, str) and 'veg' in value.lower():
+                                    diet_type = "veg"
+                                    break
+                except json.JSONDecodeError:
+                    # If JSON parsing fails, try pattern matching for cuisine: {...veg...}
+                    # Look for patterns like "cuisine: {Indian: [veg]" or "cuisine.*\[.*veg"
+                    if 'cuisine' in input_lower:
+                        # Check for patterns like [veg] or : [veg] or {.*veg
+                        # Match: cuisine: {Indian: [veg] or cuisine: {...[veg]...} or [veg] after cuisine
+                        if re.search(r'cuisine.*\[.*veg|cuisine.*\{.*veg|indian.*\[.*veg|\[.*veg.*\]', input_lower):
+                            diet_type = "veg"
+    except Exception:
+        pass
+    
+    # Fallback to string matching if JSON parsing didn't work
+    if diet_type == "non-veg":
+        if any(keyword in input_lower for keyword in ['vegan', 'plant-based', 'no dairy', 'no eggs']):
+            diet_type = "vegan"
+        elif any(keyword in input_lower for keyword in ['veg only', 'vegetarian only', 'no non-veg', 'vegetarian']):
+            diet_type = "veg"
+        elif 'cuisine' in input_lower and 'veg' in input_lower:
+            # Check if 'veg' appears in context of cuisine preference (not part of 'vegetarian')
+            # Look for patterns like "indian: [veg]" or "veg]" or "[veg" near cuisine
+            if re.search(r'cuisine.*\[.*veg|cuisine.*\{.*veg|indian.*\[.*veg|\[.*veg.*\]', input_lower):
+                diet_type = "veg"
     
     detected_states = list(dict.fromkeys(detected_states))
     return detected_states, diet_type
