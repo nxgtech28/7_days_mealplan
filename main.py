@@ -80,8 +80,9 @@ def detect_regional_preferences(input_text: str) -> tuple:
         if any(keyword in input_lower for keyword in keywords):
             detected_states.append(state)
     
-    # Detect diet type: vegan > vegetarian > non-veg
+    # Detect diet type: vegan > vegetarian > non-veg (explicit) > non-veg (default)
     diet_type = "non-veg"  # default
+    diet_detected = False
     
     # Try to parse JSON structure from input_text to extract cuisine preferences
     try:
@@ -94,41 +95,116 @@ def detect_regional_preferences(input_text: str) -> tuple:
                 json_str = input_text[json_start:json_end]
                 try:
                     parsed = json.loads(json_str)
-                    # Check if cuisine field exists and contains 'veg'
+                    # Check if cuisine field exists
                     if 'cuisine' in parsed:
                         cuisine = parsed['cuisine']
                         if isinstance(cuisine, dict):
-                            # Check all values in cuisine dict for 'veg'
+                            # Check all values in cuisine dict for diet type
                             for key, value in cuisine.items():
                                 if isinstance(value, list):
-                                    if 'veg' in [str(v).lower() for v in value]:
-                                        diet_type = "veg"
+                                    value_lower = [str(v).lower() for v in value]
+                                    # Priority: vegan > veg > non_veg/non-veg
+                                    if 'vegan' in value_lower:
+                                        diet_type = "vegan"
+                                        diet_detected = True
                                         break
-                                elif isinstance(value, str) and 'veg' in value.lower():
-                                    diet_type = "veg"
-                                    break
+                                    elif 'veg' in value_lower and 'non' not in ' '.join(value_lower):
+                                        # Check that 'veg' is not part of 'non_veg' or 'non-veg'
+                                        diet_type = "veg"
+                                        diet_detected = True
+                                        break
+                                    elif any('non' in str(v).lower() and 'veg' in str(v).lower() for v in value):
+                                        diet_type = "non-veg"
+                                        diet_detected = True
+                                        break
+                                elif isinstance(value, str):
+                                    value_lower = value.lower()
+                                    if 'vegan' in value_lower:
+                                        diet_type = "vegan"
+                                        diet_detected = True
+                                        break
+                                    elif 'veg' in value_lower and 'non' not in value_lower:
+                                        diet_type = "veg"
+                                        diet_detected = True
+                                        break
+                                    elif 'non' in value_lower and 'veg' in value_lower:
+                                        diet_type = "non-veg"
+                                        diet_detected = True
+                                        break
                 except json.JSONDecodeError:
-                    # If JSON parsing fails, try pattern matching for cuisine: {...veg...}
-                    # Look for patterns like "cuisine: {Indian: [veg]" or "cuisine.*\[.*veg"
+                    # If JSON parsing fails, try pattern matching for cuisine preferences
                     if 'cuisine' in input_lower:
-                        # Check for patterns like [veg] or : [veg] or {.*veg
-                        # Match: cuisine: {Indian: [veg] or cuisine: {...[veg]...} or [veg] after cuisine
-                        if re.search(r'cuisine.*\[.*veg|cuisine.*\{.*veg|indian.*\[.*veg|\[.*veg.*\]', input_lower):
-                            diet_type = "veg"
+                        # Extract cuisine section - handle nested braces by finding matching closing brace
+                        cuisine_start = input_lower.find('cuisine')
+                        if cuisine_start >= 0:
+                            # Find the opening brace after 'cuisine:'
+                            brace_start = input_lower.find('{', cuisine_start)
+                            if brace_start >= 0:
+                                # Find matching closing brace
+                                brace_count = 0
+                                brace_end = brace_start
+                                for i in range(brace_start, min(brace_start + 500, len(input_lower))):
+                                    if input_lower[i] == '{':
+                                        brace_count += 1
+                                    elif input_lower[i] == '}':
+                                        brace_count -= 1
+                                        if brace_count == 0:
+                                            brace_end = i + 1
+                                            break
+                                
+                                if brace_end > brace_start:
+                                    cuisine_section = input_lower[cuisine_start:brace_end]
+                                    
+                                    # Priority order: vegan > non_veg/non-veg > veg
+                                    # Check for vegan first
+                                    if re.search(r'\bvegan\b', cuisine_section, re.IGNORECASE):
+                                        diet_type = "vegan"
+                                        diet_detected = True
+                                    # Check for non_veg, non-veg, Non_veg, Non-veg (case insensitive)
+                                    elif re.search(r'non[_\s-]?veg', cuisine_section, re.IGNORECASE):
+                                        diet_type = "non-veg"
+                                        diet_detected = True
+                                    # Check for veg (but not non_veg) - must be standalone "veg"
+                                    elif re.search(r'\[.*\bveg\b.*\]', cuisine_section, re.IGNORECASE) and not re.search(r'non[_\s-]?veg', cuisine_section, re.IGNORECASE):
+                                        diet_type = "veg"
+                                        diet_detected = True
     except Exception:
         pass
     
-    # Fallback to string matching if JSON parsing didn't work
-    if diet_type == "non-veg":
+    # Fallback to string matching if JSON parsing didn't work or no diet detected
+    if not diet_detected:
+        # Priority: vegan > veg > non-veg (explicit) > non-veg (default)
         if any(keyword in input_lower for keyword in ['vegan', 'plant-based', 'no dairy', 'no eggs']):
             diet_type = "vegan"
         elif any(keyword in input_lower for keyword in ['veg only', 'vegetarian only', 'no non-veg', 'vegetarian']):
             diet_type = "veg"
-        elif 'cuisine' in input_lower and 'veg' in input_lower:
-            # Check if 'veg' appears in context of cuisine preference (not part of 'vegetarian')
-            # Look for patterns like "indian: [veg]" or "veg]" or "[veg" near cuisine
-            if re.search(r'cuisine.*\[.*veg|cuisine.*\{.*veg|indian.*\[.*veg|\[.*veg.*\]', input_lower):
-                diet_type = "veg"
+        elif 'cuisine' in input_lower:
+            # Extract cuisine section - handle nested braces
+            cuisine_start = input_lower.find('cuisine')
+            if cuisine_start >= 0:
+                brace_start = input_lower.find('{', cuisine_start)
+                if brace_start >= 0:
+                    # Find matching closing brace
+                    brace_count = 0
+                    brace_end = brace_start
+                    for i in range(brace_start, min(brace_start + 500, len(input_lower))):
+                        if input_lower[i] == '{':
+                            brace_count += 1
+                        elif input_lower[i] == '}':
+                            brace_count -= 1
+                            if brace_count == 0:
+                                brace_end = i + 1
+                                break
+                    
+                    if brace_end > brace_start:
+                        cuisine_section = input_lower[cuisine_start:brace_end]
+                        
+                        # Check for non_veg/non-veg patterns first (before veg to avoid false matches)
+                        if re.search(r'non[_\s-]?veg', cuisine_section, re.IGNORECASE):
+                            diet_type = "non-veg"
+                        # Check for veg (but not non_veg) - must be standalone "veg"
+                        elif re.search(r'\bveg\b', cuisine_section, re.IGNORECASE) and not re.search(r'non[_\s-]?veg', cuisine_section, re.IGNORECASE):
+                            diet_type = "veg"
     
     detected_states = list(dict.fromkeys(detected_states))
     return detected_states, diet_type
@@ -560,6 +636,10 @@ async def get_meal_plan(request: MealRequest):
         # 4. Detect regional preferences and diet type
         states, diet_type = detect_regional_preferences(request.input_text)
         
+        # Debug: Print detected diet type
+        print(f"🔍 Detected diet type: {diet_type}")
+        print(f"🔍 Input text snippet: {request.input_text[:200]}...")
+        
         # 5. Get food dataset
         food_dataset = None
         if states:
@@ -573,6 +653,10 @@ async def get_meal_plan(request: MealRequest):
         # Format datasets
         food_dataset_json = format_food_dataset_for_prompt(food_dataset, diet_type)
         snacks_json = format_snacks_for_prompt(snacks, diet_type)
+        
+        # Debug: Verify filtered dataset contains correct diet type items
+        print(f"🔍 Filtered food dataset preview (first 500 chars): {food_dataset_json[:500]}...")
+        print(f"🔍 Filtered snacks preview (first 300 chars): {snacks_json[:300]}...")
         
         # 6. Build LLM prompt
         target_weight = user_data.get('target_weight', user_data['weight'])
@@ -592,11 +676,15 @@ async def get_meal_plan(request: MealRequest):
         if not GROQ_API_KEY:
             raise HTTPException(status_code=500, detail="GROQ_API_KEY missing in config")
 
+        import time
+        # Add unique timestamp to prevent caching
+        unique_id = int(time.time() * 1000)
+        
         response = client.chat.completions.create(
             model=GROQ_MODEL,
             messages=[
                 {"role": "system", "content": llm_prompt},
-                {"role": "user", "content": f"Generate a 7-day meal plan with target calorie: {target_calorie} kcal/day"}
+                {"role": "user", "content": f"Generate a 7-day meal plan with target calorie: {target_calorie} kcal/day, diet type: {diet_type}, request_id: {unique_id}"}
             ],
             temperature=0.3,
             max_tokens=6000
