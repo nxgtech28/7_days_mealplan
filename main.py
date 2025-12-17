@@ -17,8 +17,8 @@ app = FastAPI(title="Meal Planner API")
 # --- INITIALIZATION ---
 try:
     # Priority: Environment variable > config.json
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
+    GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
     
     # If not in environment, try config.json (for local development)
     if not GROQ_API_KEY:
@@ -28,18 +28,31 @@ try:
                 content = f.read().strip()
                 if content:
                     config = json.loads(content)
-                    GROQ_API_KEY = config.get("groq_api_key", "")
+                    GROQ_API_KEY = config.get("groq_api_key", "").strip() if config.get("groq_api_key") else ""
                     if not GROQ_MODEL or GROQ_MODEL == "llama-3.3-70b-versatile":
-                        GROQ_MODEL = config.get("model", "llama-3.3-70b-versatile")
+                        GROQ_MODEL = config.get("model", "llama-3.3-70b-versatile").strip() if config.get("model") else "llama-3.3-70b-versatile"
 
+    # Validate API key
     if not GROQ_API_KEY:
         print("⚠️ Warning: GROQ_API_KEY not found. API calls will fail.")
+        client = None
+    elif len(GROQ_API_KEY) < 20:
+        print(f"⚠️ Warning: GROQ_API_KEY appears to be invalid (too short: {len(GROQ_API_KEY)} chars). API calls will fail.")
+        client = None
     else:
-        client = Groq(api_key=GROQ_API_KEY)
+        print(f"✅ GROQ_API_KEY loaded (length: {len(GROQ_API_KEY)} chars)")
+        print(f"✅ GROQ_MODEL: {GROQ_MODEL}")
+        try:
+            client = Groq(api_key=GROQ_API_KEY)
+        except Exception as client_error:
+            print(f"❌ Error creating Groq client: {str(client_error)}")
+            client = None
 
 except Exception as e:
     print(f"❌ Error initializing configuration: {str(e)}")
-    raise
+    import traceback
+    traceback.print_exc()
+    client = None
 
 # Import food datasets
 try:
@@ -673,25 +686,48 @@ async def get_meal_plan(request: MealRequest):
         print(f"\n📤 Sending Prompt to LLM... (Length: {len(llm_prompt)})")
         
         # 7. Call LLM
-        if not GROQ_API_KEY:
-            raise HTTPException(status_code=500, detail="GROQ_API_KEY missing in config")
+        if not GROQ_API_KEY or client is None:
+            error_msg = "GROQ_API_KEY is missing or invalid. Please check your environment variables in Render."
+            if not GROQ_API_KEY:
+                error_msg += " The API key was not found."
+            elif len(GROQ_API_KEY) < 20:
+                error_msg += f" The API key appears to be invalid (length: {len(GROQ_API_KEY)})."
+            else:
+                error_msg += " The API key may be incorrect or expired."
+            raise HTTPException(status_code=500, detail=error_msg)
 
         import time
         # Add unique timestamp to prevent caching
         unique_id = int(time.time() * 1000)
         
-        response = client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=[
-                {"role": "system", "content": llm_prompt},
-                {"role": "user", "content": f"Generate a 7-day meal plan with target calorie: {target_calorie} kcal/day, diet type: {diet_type}, request_id: {unique_id}"}
-            ],
-            temperature=0.3,
-            max_tokens=6000
-        )
-        
-        ai_response = response.choices[0].message.content
-        print(f"\n📥 Received Response (Length: {len(ai_response)})")
+        try:
+            response = client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=[
+                    {"role": "system", "content": llm_prompt},
+                    {"role": "user", "content": f"Generate a 7-day meal plan with target calorie: {target_calorie} kcal/day, diet type: {diet_type}, request_id: {unique_id}"}
+                ],
+                temperature=0.3,
+                max_tokens=6000
+            )
+            
+            ai_response = response.choices[0].message.content
+            print(f"\n📥 Received Response (Length: {len(ai_response)})")
+        except Exception as api_error:
+            error_str = str(api_error)
+            print(f"❌ Groq API Error: {error_str}")
+            
+            # Check for authentication errors
+            if "401" in error_str or "invalid_api_key" in error_str.lower() or "Invalid API Key" in error_str:
+                raise HTTPException(
+                    status_code=401, 
+                    detail="Invalid Groq API Key. Please verify your GROQ_API_KEY environment variable in Render. Make sure there are no extra spaces and the key is correct."
+                )
+            else:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Groq API Error: {error_str}"
+                )
         
         # 8. Parse response
         result = parse_meal_plan_response(ai_response)
