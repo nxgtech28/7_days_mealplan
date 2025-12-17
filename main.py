@@ -36,9 +36,19 @@ try:
     if not GROQ_API_KEY:
         print("⚠️ Warning: GROQ_API_KEY not found. API calls will fail.")
         client = None
-    elif len(GROQ_API_KEY) < 20:
-        print(f"⚠️ Warning: GROQ_API_KEY appears to be invalid (too short: {len(GROQ_API_KEY)} chars). API calls will fail.")
+    elif len(GROQ_API_KEY) < 30:
+        print(f"❌ ERROR: GROQ_API_KEY is too short ({len(GROQ_API_KEY)} chars). Groq API keys should be at least 40+ characters long.")
+        print(f"❌ Your API key appears to be truncated or incomplete. Please check your Render environment variable.")
         client = None
+    elif not GROQ_API_KEY.startswith("gsk_"):
+        print(f"⚠️ Warning: GROQ_API_KEY doesn't start with 'gsk_'. This may indicate an invalid key format.")
+        print(f"✅ GROQ_API_KEY loaded (length: {len(GROQ_API_KEY)} chars)")
+        print(f"✅ GROQ_MODEL: {GROQ_MODEL}")
+        try:
+            client = Groq(api_key=GROQ_API_KEY)
+        except Exception as client_error:
+            print(f"❌ Error creating Groq client: {str(client_error)}")
+            client = None
     else:
         print(f"✅ GROQ_API_KEY loaded (length: {len(GROQ_API_KEY)} chars)")
         print(f"✅ GROQ_MODEL: {GROQ_MODEL}")
@@ -690,10 +700,10 @@ async def get_meal_plan(request: MealRequest):
             error_msg = "GROQ_API_KEY is missing or invalid. Please check your environment variables in Render."
             if not GROQ_API_KEY:
                 error_msg += " The API key was not found."
-            elif len(GROQ_API_KEY) < 20:
-                error_msg += f" The API key appears to be invalid (length: {len(GROQ_API_KEY)})."
+            elif len(GROQ_API_KEY) < 30:
+                error_msg += f" The API key is too short ({len(GROQ_API_KEY)} chars). Groq API keys should be 40+ characters and start with 'gsk_'. Your key appears to be truncated."
             else:
-                error_msg += " The API key may be incorrect or expired."
+                error_msg += " The API key may be incorrect or expired. Please verify it at https://console.groq.com/keys"
             raise HTTPException(status_code=500, detail=error_msg)
 
         import time
